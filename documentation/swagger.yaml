@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
-  version: 1.0.0
-  title: Blog Web API
-  description: A Node.js API for managing blog posts, comments, and user interactions.
+  version: 2.0.0
+  title: Restaurant API
+  description: API for managing restaurants
   termsOfService: http://example.com/terms/
   contact:
     name: API Support
@@ -12,127 +12,79 @@ info:
     name: MIT
     url: https://opensource.org/licenses/MIT
 servers:
-  - url: http://localhost:4000/api
+  - url: http://localhost:3000/api
     description: Local development server
 
 paths:
-  /posts:
+  /restaurants:
     get:
-      summary: Get all blog posts
+      summary: List all restaurants
       responses:
         '200':
-          description: List of blog posts
+          description: A list of restaurants
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BlogPost'
+                  $ref: '#/components/schemas/Restaurant'
     post:
-      summary: Create a new blog post
+      summary: Create a new restaurant
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BlogPost'
+              $ref: '#/components/schemas/Restaurant'
       responses:
         '201':
-          description: Blog post created
+          description: Restaurant created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BlogPost'
+                $ref: '#/components/schemas/Restaurant'
 
-  /posts/{id}:
-    get:
-      summary: Get a specific blog post by ID
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The ID of the blog post
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Blog post details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BlogPost'
-        '404':
-          description: Blog post not found
-    put:
-      summary: Update a blog post by ID
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The ID of the blog post
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BlogPost'
-      responses:
-        '200':
-          description: Blog post updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BlogPost'
+  /restaurants/{id}:
     delete:
-      summary: Delete a blog post by ID
+      summary: Delete a restaurant by ID
       parameters:
         - name: id
           in: path
           required: true
-          description: The ID of the blog post
+          description: The ID of the restaurant
           schema:
             type: string
       responses:
-        '200':
-          description: Blog post deleted
+        '204':
+          description: Restaurant deleted
 
 components:
   schemas:
-    BlogPost:
+    Restaurant:
       type: object
       required:
-        - title
-        - content
-        - author
+        - name
+        - address
+        - phoneNumber
+        - emailAddress
+        - rating
       properties:
         id:
           type: string
-          description: Unique identifier for the blog post
-        title:
+          description: Unique identifier for the restaurant
+        name:
           type: string
-          description: Title of the blog post
-        content:
+          description: Name of the restaurant
+        address:
           type: string
-          description: Content of the blog post
-        author:
+          description: Address of the restaurant
+        phoneNumber:
           type: string
-          description: Author of the blog post
-        tags:
-          type: array
-          items:
-            type: string
-          description: Tags associated with the blog post
-        likes:
+          description: Phone number of the restaurant
+        emailAddress:
+          type: string
+          description: Email address of the restaurant
+        rating:
           type: integer
-          default: 0
-          description: Number of likes on the post
-        createdAt:
-          type: string
-          format: date-time
-          description: Timestamp when the post was created
-        updatedAt:
-          type: string
-          format: date-time
-          description: Timestamp when the post was last updated
+          format: int32
+          description: Rating of the restaurant (1-10)
